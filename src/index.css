@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+@tailwind utilities;
+
+
+.bg-banner {
+  background-image: url(https://github.com/minhnhut170701/movie-trailer1/blob/master/public/banner.png?raw=true);
+}
+
+.min-1em-8percent {
+  padding: min(1em,4%)
+}
+
+.responsive-height {
+  height: min(90dvh, 75vh + 10vw); /* Tăng theo vw, nhưng không vượt quá 90dvh */
+  max-height: 900px;
+}
+
+.responsive-heading {
+  font-size: clamp(1.5rem, 5vw, 2.25rem); /* 24px đến 36px */
+}
+.responsive-text {
+  font-size: clamp(0.875rem, 2vw, 1.125rem); /* 14px đến 18px */
+}
