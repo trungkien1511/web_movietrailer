@@ -3,6 +3,7 @@ import Header from './components/Header'
 import Banner from './components/Banner.jsx'
 import MovieList from './components/MovieList.jsx'
 import MovieSearch from './components/MovieSearch.jsx';
+import { MovieProvider } from './context/MovieProvider.jsx';
 
 function App() {
 
@@ -62,20 +63,22 @@ function App() {
 
   return (
     <>
-      <div className='bg-black'>
-        <Header onSearch={handleSearch} />
-        <Banner />
-        {movieSearch.length > 0 ?
-          (
-            <MovieSearch title={`Kết quả tìm kiếm`} data={movieSearch} />
-          ) : (
-            <>
-              <MovieList title={`Phim Hot`} data={trendingMovies} />
-              <MovieList title={`Phim đề cử`} data={topRatedMovies} />
-            </>
-          )
-        }
-      </div>
+      <MovieProvider>
+        <div className='bg-black'>
+          <Header onSearch={handleSearch} />
+          <Banner />
+          {movieSearch.length > 0 ?
+            (
+              <MovieSearch title={`Kết quả tìm kiếm`} data={movieSearch} />
+            ) : (
+              <>
+                <MovieList title={`Phim Hot`} data={trendingMovies} />
+                <MovieList title={`Phim đề cử`} data={topRatedMovies} />
+              </>
+            )
+          }
+        </div>
+      </MovieProvider>
     </>
   )
 }

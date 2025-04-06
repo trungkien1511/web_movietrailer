@@ -1,15 +1,12 @@
-import React, { useState } from "react";
+import { useContext } from "react";
 import PropTypes from "prop-types";
-import Carousel from 'react-multi-carousel';
-import 'react-multi-carousel/lib/styles.css';
-import Modal from 'react-modal';
-import YouTube from "react-youtube";
+import { MovieContext } from "../context/MovieProvider";
+import Carousel from "react-multi-carousel";
 
 
 const MovieList = ({ title, data }) => {
 
-    const [modalIsOpen, setModalIsOpen] = useState(false)
-    const [trailerKey, setTrailerKey] = useState("")
+    const { handleTrailer } = useContext(MovieContext)
 
     const responsive = {
         superLargeDesktop: { breakpoint: { max: 4000, min: 3000 }, items: 10 },
@@ -17,39 +14,6 @@ const MovieList = ({ title, data }) => {
         tablet: { breakpoint: { max: 1200, min: 600 }, items: 3 },
         mobile: { breakpoint: { max: 600, min: 0 }, items: 2 },
     };
-
-    const opts = {
-        height: '390',
-        width: '640',
-        playerVars: {
-            // https://developers.google.com/youtube/player_parameters
-            autoplay: 1,
-        },
-    };
-
-    const handleTrailer = async (id) => {
-        setTrailerKey("")
-        try {
-            const url = `https://api.themoviedb.org/3/movie/${id}/videos?language=en-US`;
-
-            const options = {
-                method: 'GET',
-                headers: {
-                    accept: 'application/json',
-                    Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwMWRkNTgyZDE4M2NlYWU1Yjc5MzgwYWNiZmVmNGE2NCIsIm5iZiI6MTc0MzE0MTMxNC4xMDQsInN1YiI6IjY3ZTYzOWMyNWYzZTBhYzE4ODAwNGJkNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.7ynNDpUfdOmi_kbjUrhFPJIcm2oJzXhs3v1SlvaQVEs`,
-                }
-            };
-
-            const movieKey = await fetch(url, options)
-            const data = await movieKey.json()
-            setTrailerKey(data.results[0].key)
-            setModalIsOpen(true)
-            console.log(data)
-        } catch (error) {
-            setModalIsOpen(false)
-            console.log(error)
-        }
-    }
 
     return (
         <div className="w-[90dvw] mx-auto pb-10">
@@ -77,28 +41,6 @@ const MovieList = ({ title, data }) => {
                     </div>
                 ))}
             </Carousel>
-
-            <Modal
-                isOpen={modalIsOpen}
-                onRequestClose={() => setModalIsOpen(false)}
-                style={{
-                    overlay: {
-                        position: "fixed",
-                        zIndex: 9999,
-                    },
-                    content: {
-                        top: "50%",
-                        left: "50%",
-                        right: "auto",
-                        bottom: "auto",
-                        marginRight: "-50%",
-                        transform: "translate(-50%, -50%)",
-                    },
-                }}
-            >
-                <YouTube videoId={trailerKey} opts={opts} />
-            </Modal>
-
         </div>
     );
 };
